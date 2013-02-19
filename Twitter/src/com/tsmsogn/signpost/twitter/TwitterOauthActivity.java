@@ -48,12 +48,12 @@ public class TwitterOauthActivity extends Activity {
         Uri uri = intent.getData();
         if (uri != null
                 && uri.toString().startsWith(Constants.CALLBACK_URL)) {
-            String veriﬁer = uri
+            String verifier = uri
                     .getQueryParameter(oauth.signpost.OAuth.OAUTH_VERIFIER);
 
             try {
                 // this will populate token and token_secret in consumer
-                provider.retrieveAccessToken(consumer, veriﬁer);
+                provider.retrieveAccessToken(consumer, verifier);
                 String userKey = consumer.getToken();
                 String userSecret = consumer.getTokenSecret();
 
