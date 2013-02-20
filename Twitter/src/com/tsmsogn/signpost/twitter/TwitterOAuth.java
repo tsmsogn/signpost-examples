@@ -4,14 +4,13 @@ import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer;
 import oauth.signpost.commonshttp.CommonsHttpOAuthProvider;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 
-public class TwitterOAuthActivity extends Activity {
-    private final static String TAG = TwitterOAuthActivity.class
-            .getCanonicalName();
+public class TwitterOAuth extends Activity {
+    private final static String TAG = TwitterOAuth.class.getCanonicalName();
     final private CommonsHttpOAuthConsumer consumer = new CommonsHttpOAuthConsumer(
             Constants.CONSUMER_KEY, Constants.CONSUMER_SECRET);
     final private CommonsHttpOAuthProvider provider = new CommonsHttpOAuthProvider(
@@ -46,27 +45,18 @@ public class TwitterOAuthActivity extends Activity {
         super.onNewIntent(intent);
 
         Uri uri = intent.getData();
-        if (uri != null
-                && uri.toString().startsWith(Constants.CALLBACK_URL)) {
+        if (uri != null && uri.toString().startsWith(Constants.CALLBACK_URL)) {
             String verifier = uri
                     .getQueryParameter(oauth.signpost.OAuth.OAUTH_VERIFIER);
 
             try {
                 // this will populate token and token_secret in consumer
                 provider.retrieveAccessToken(consumer, verifier);
-                String userKey = consumer.getToken();
-                String userSecret = consumer.getTokenSecret();
-
-                // Save user_key and user_secret in user preferences and return
-                SharedPreferences settings = getBaseContext()
-                        .getSharedPreferences("your_app_prefs", 0);
-                SharedPreferences.Editor editor = settings.edit();
-                editor.putString("user_key", userKey);
-                editor.putString("user_secret", userSecret);
-                editor.commit();
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            Log.v(TAG, "Token: " + consumer.getToken());
+            Log.v(TAG, "Token secret:" + consumer.getTokenSecret());
         }
 
     }

@@ -1,10 +1,5 @@
 package com.tsmsogn.signpost.twitter;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import oauth.signpost.OAuth;
 import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer;
 import oauth.signpost.commonshttp.CommonsHttpOAuthProvider;
@@ -14,7 +9,6 @@ import oauth.signpost.exception.OAuthMessageSignerException;
 import oauth.signpost.exception.OAuthNotAuthorizedException;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,11 +17,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import com.tsmsogn.signpost.twitter.R;
 
-public class TwitterOAuthWithPINActivity extends Activity implements
-        OnClickListener {
-    private final static String TAG = TwitterOAuthWithPINActivity.class
+public class TwitterOAuthWithPIN extends Activity implements OnClickListener {
+    private final static String TAG = TwitterOAuthWithPIN.class
             .getCanonicalName();
     private Button mTwitterButton;
     private EditText mTwitterPinEditText;
@@ -82,50 +74,8 @@ public class TwitterOAuthWithPINActivity extends Activity implements
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-            Log.v(TAG, "Access token: " + consumer.getToken());
+            Log.v(TAG, "Token: " + consumer.getToken());
             Log.v(TAG, "Token secret:" + consumer.getTokenSecret());
-            consumer.setTokenWithSecret(consumer.getToken(),
-                    consumer.getTokenSecret());
-            URL url = null;
-            try {
-                url = new URL(
-                        "https://api.twitter.com/1.1/statuses/mentions_timeline.json");
-            } catch (MalformedURLException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            HttpURLConnection request = null;
-            try {
-                request = (HttpURLConnection) url.openConnection();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            try {
-                consumer.sign(request);
-            } catch (OAuthMessageSignerException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (OAuthExpectationFailedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (OAuthCommunicationException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            try {
-                request.connect();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            try {
-                System.out.println("Response: " + request.getResponseCode()
-                        + " " + request.getResponseMessage());
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
         }
     }
 
